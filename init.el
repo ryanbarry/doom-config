@@ -145,9 +145,9 @@
        (javascript +lsp)        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
-       ;;latex             ; writing papers in Emacs has never been so fun
+       latex             ; writing papers in Emacs has never been so fun
        ;;lean              ; for folks with too much to prove
-       ;;ledger            ; be audit you can be
+       ledger            ; be audit you can be
        lua               ; one-based indices? one-based indices
        (markdown +grip)          ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
@@ -174,10 +174,10 @@
        ;;terra             ; Earth and Moon in alignment for performance.
        (web +tree-sitter)               ; the tubes
        (yaml +tree-sitter)             ; JSON, but readable
-       ;;zig               ; C, but simpler
+       (zig +tree-sitter +lsp)               ; C, but simpler
 
        :email
-       ;;(mu4e +org +gmail)
+       (mu4e +org) ;; there's a +gmail option
        ;;notmuch
        ;;(wanderlust +gmail)
 
@@ -185,7 +185,7 @@
        ;;calendar
        ;;emms
        ;;everywhere        ; *leave* Emacs!? You must be joking
-       ;;irc               ; how neckbeards socialize
+       irc               ; how neckbeards socialize
        ;;(rss +org)        ; emacs as an RSS reader
        ;;twitter           ; twitter client https://twitter.com/vnought
 

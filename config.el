@@ -9,6 +9,9 @@
 (setq user-full-name "Ryan Barry"
       user-mail-address "ryan@nuclearice.com")
 
+;; because, i like fish but it's not POSIX-compliant
+(setq shell-file-name (executable-find "bash"))
+
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
 ;; - `doom-font' -- the primary font to use
@@ -23,6 +26,8 @@
 ;;
 ;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
 ;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
+(setq doom-font (font-spec :family "MesloLGS Nerd Font Mono" :size 13))
+      ;;doom-variable-pitch-font (font-spec :family "FiraCode Nerd Font Propo" :size 13))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
@@ -33,7 +38,8 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 ;(setq doom-theme 'doom-one)
-(setq doom-theme 'solarized-dark)
+;(setq doom-theme 'solarized-dark)
+(setq doom-theme 'doom-bluloco-dark)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -42,7 +48,9 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
-
+(setq org-export-with-smart-quotes 'nil)
+(setq org-export-with-toc 'nil)
+(setq org-export-with-special-strings 'nil)
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -76,3 +84,26 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 (use-package! nix-sandbox)
+
+(defun rpb/copy-file-to-micropython-target ()
+  (interactive)
+  (copy-file (buffer-file-name (current-buffer)) "/run/media/rpb/MicroPython/" :true))
+
+(after! circe
+  (defun fetch-password (&rest params)
+    (require 'auth-source)
+    (if-let* ((match (car (apply #'auth-source-search params)))
+              (secret (plist-get match :secret)))
+        (if (functionp secret)
+            (funcall secret)
+          secret)
+      (user-error "Password not found for %S" params)))
+
+  (set-irc-server! "irc.libera.chat"
+    '(:tls t
+      :port 6697
+      :nick "rpb"
+      :sasl-password
+      (lambda (server)
+        (fetch-password :user "rpb" :host "irc.libera.chat"))
+      :channels ("#emacs"))))
